@@ -1,35 +1,39 @@
 # Prueba Tecnica de Backend
 
-Clonar el repositorio
+### Clonar el repositorio
 - git clone https://github.com/PPOSM1993/backend_crud_test.git
 
-Entrar al directorio
+### Entrar al directorio
 
-- cd backend_crud_test
+cd backend_crud_test
 
-Crear un entorno virtual
+### Crear un entorno virtual
 - python -m venv env
 
 
-Ingresar al entorno virtual
+### Ingresar al entorno virtual
 - source env/bin/activate  # En Windows usa env\Scripts\activate
 
 
-Instalar las dependencias
-    - pip install -r requirements.txt
+### Instalar las dependencias
 
+```bash
+pip install -r requirements.txt
+```
 
-Ejecutar las migraciones
-    ```bash
-        python manage.py makemigrations
-        python manage.py migrate
-    ```
+### Ejecutar las migraciones
 
-Ejecutar en el servidor
-    ```bash
-        python manage.py runserver
-    ```
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-Para pruebas de la API
-    ```bash
-        python manage.py test
+### Ejecutar en el servidor
+```bash
+python manage.py runserver
+```
+
+### Para pruebas de la API
+```bash
+python manage.py test
+```
