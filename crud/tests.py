@@ -7,14 +7,13 @@ from .models import Customer, Product
 class CustomerTests(APITestCase):
 
     def setUp(self):
-        # Cliente inicial para pruebas
         self.customer = Customer.objects.create(
             first_name="Pedro",
             last_name="Osorio",
             email="pedro@example.com",
             phone="+56912345678"
         )
-        self.customer_url = reverse('customer-list')  # Usando router DRF
+        self.customer_url = reverse('customer-list')  # Usa el nombre del router DRF
 
     def test_create_customer(self):
         data = {
@@ -31,7 +30,16 @@ class CustomerTests(APITestCase):
     def test_list_customers(self):
         response = self.client.get(self.customer_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)  # Solo el cliente de setUp
+        self.assertEqual(len(response.data), 1)
+
+    def test_email_unique(self):
+        data = {
+            "first_name": "Pedro",
+            "last_name": "Osorio",
+            "email": "pedro@example.com"
+        }
+        response = self.client.post(self.customer_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class ProductTests(APITestCase):
 
@@ -55,3 +63,18 @@ class ProductTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 2)
         self.assertEqual(Product.objects.get(name="Libro Python").price, 30000)
+
+    def test_list_products(self):
+        response = self.client.get(self.product_url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    def test_stock_non_negative(self):
+        data = {
+            "name": "Libro Test",
+            "description": "Stock negativo",
+            "price": 1000,
+            "stock": -5
+        }
+        response = self.client.post(self.product_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
